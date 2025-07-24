@@ -1,0 +1,144 @@
+root@OVM:/home/vboxuser/git/kuber-homeworks/1.3# kubectl describe pod mydeployment-5ddfb67ff4-2hkcd
+
+Name:             mydeployment-5ddfb67ff4-2hkcd
+
+Namespace:        default
+
+Priority:         0
+
+Service Account:  default
+
+Node:             ovm/192.168.2.58
+
+Start Time:       Thu, 24 Jul 2025 21:47:13 +0300
+
+Labels:           app=nginx-multitool
+
+                  pod-template-hash=5ddfb67ff4
+
+Annotations:      cni.projectcalico.org/containerID: 46030b6dd8ef723fd32a9a63f3b08b83d1b8f8bd56e26c1b573d9046d7c6de09
+
+                  cni.projectcalico.org/podIP: 10.1.203.10/32
+
+                  cni.projectcalico.org/podIPs: 10.1.203.10/32
+
+Status:           Running
+
+IP:               10.1.203.10
+
+IPs:
+
+  IP:           10.1.203.10
+
+Controlled By:  ReplicaSet/mydeployment-5ddfb67ff4
+
+Containers:
+
+  nginx:
+
+    Container ID:   containerd://62a2b26584312e2ec97bd49c8f41bbd4dba3588b09450a786d69062c591a1803
+
+    Image:          nginx:latest
+
+    Image ID:       docker.io/library/nginx@sha256:84ec966e61a8c7846f509da7eb081c55c1d56817448728924a87ab32f12a72fb
+
+    Port:           80/TCP
+
+    Host Port:      0/TCP
+
+    State:          Running
+
+      Started:      Thu, 24 Jul 2025 21:47:15 +0300
+
+    Ready:          True
+
+    Restart Count:  0
+
+    Environment:    <none>
+
+    Mounts:
+
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gtjxv (ro)
+
+  multitool:
+
+    Container ID:   containerd://8b7dd9cb410a9aabd99f8b7cf129859703a03d87d0d204e0d8f8634f99c22322
+
+    Image:          wbitt/network-multitool
+
+    Image ID:       docker.io/wbitt/network-multitool@sha256:d1137e87af76ee15cd0b3d4c7e2fcd111ffbd510ccd0af076fc98dddfc50a735
+
+    Port:           <none>
+
+    Host Port:      <none>
+
+    State:          Waiting
+
+      Reason:       CrashLoopBackOff
+
+    Last State:     Terminated
+
+      Reason:       Error
+
+      Exit Code:    1
+
+      Started:      Thu, 24 Jul 2025 22:19:24 +0300
+
+      Finished:     Thu, 24 Jul 2025 22:19:27 +0300
+
+    Ready:          False
+
+    Restart Count:  11
+
+    Environment:    <none>
+
+    Mounts:
+
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gtjxv (ro)
+
+Conditions:
+
+  Type                        Status
+
+  PodReadyToStartContainers   True 
+
+  Initialized                 True 
+
+  Ready                       False 
+
+  ContainersReady             False 
+
+  PodScheduled                True 
+
+Volumes:
+
+  kube-api-access-gtjxv:
+
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+
+    TokenExpirationSeconds:  3607
+
+    ConfigMapName:           kube-root-ca.crt
+
+    ConfigMapOptional:       <nil>
+
+    DownwardAPI:             true
+
+QoS Class:                   BestEffort
+
+Node-Selectors:              <none>
+
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+Events:
+
+  Type     Reason   Age                   From     Message
+
+  ----     ------   ----                  ----     -------
+
+  Normal   Pulling  4m38s (x12 over 36m)  kubelet  Pulling image "wbitt/network-multitool"
+
+  Warning  BackOff  96s (x160 over 36m)   kubelet  Back-off restarting failed container multitool in pod mydeployment-5ddfb67ff4-2hkcd_default(99d276a1-75e3-49b5-ac02-d06c34f874e4)
+
