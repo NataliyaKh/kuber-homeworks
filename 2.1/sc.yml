@@ -1,0 +1,68 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: stcl
+provisioner: kubernetes.io/no-provisioner # ИНФОРМАЦИЯ: Нет автоматического развёртывания
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: persv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: stcl
+  hostPath:
+    path: /tmp/logs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvcl
+spec:
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: stcl
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-exchange-sc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stclass
+  template:
+    metadata:
+      labels:
+        app: stclass
+    spec:
+      containers:
+      - name: bbc
+        image: busybox
+        command: ["/bin/sh", "-c"] 
+        args: ["while true; do echo $(date) >> /shared/logs.txt; sleep 5; done"]
+        volumeMounts:
+        - name: shared-logs
+          mountPath: /shared
+      - name: mtc
+        image: wbitt/network-multitool
+        command: ["/bin/sh", "-c"]
+        args: ["tail -f /shared/logs.txt"]
+        volumeMounts:
+        - name: shared-logs
+          mountPath: /shared
+      volumes:
+      - name: shared-logs
+        persistentVolumeClaim:
+          claimName: pvcl
