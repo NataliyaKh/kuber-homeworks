@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.25.2"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+serviceAccount:
+  create: false
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: v125-app1.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+autoscaling:
+  enabled: false
